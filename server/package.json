@@ -1,0 +1,11 @@
+{
+  "name": "oms",
+  "version": "1.0.0",
+  "description": "order management system",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Dpenha",
+  "license": "ISC"
+}
