@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var bodyParser = require("body-parser");
 var express = require("express");
 var mongoose = require("mongoose");
 var cors = require("cors");
 var database_1 = require("./config/database");
-var application_1 = require("./config/application");
 var itemsRouter_1 = require("./router/itemsRouter");
 var itemRouter = new itemsRouter_1.ItemsRouter();
 var Server = /** @class */ (function () {
@@ -15,13 +15,15 @@ var Server = /** @class */ (function () {
          */
         this.config = function () {
             _this.app.use(cors());
+            _this.app.use(bodyParser.urlencoded({ extended: true }));
+            _this.app.use(bodyParser.json());
             _this.intializeCors();
             _this.globalError();
         };
         this.intializeCors = function () {
             // cors
             _this.app.use(function (req, res, next) {
-                res.header('Access-Control-Allow-Origin', application_1.default.baseUrl);
+                res.header('Access-Control-Allow-Origin', '*');
                 res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
                 res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials');
                 res.header('Access-Control-Allow-Credentials', 'true');

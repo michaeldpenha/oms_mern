@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 import * as cors from 'cors';
 import dbConfig from './config/database';
 import application from './config/application';
-import {ItemsRouter} from './router/itemsRouter';
+import { ItemsRouter } from './router/itemsRouter';
 
 const itemRouter = new ItemsRouter();
 class Server {
@@ -21,13 +21,15 @@ class Server {
      */
     public config = () => {
         this.app.use(cors());
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(bodyParser.json());
         this.intializeCors();
         this.globalError();
     }
     public intializeCors = () => {
         // cors
         this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', application.baseUrl);
+            res.header('Access-Control-Allow-Origin', '*');
             res.header(
                 'Access-Control-Allow-Methods',
                 'GET, POST, PUT, DELETE, OPTIONS',
@@ -52,11 +54,11 @@ class Server {
      */
     public routes = () => {
         const router: express.Router = express.Router();
-        this.app.use('/',router);
+        this.app.use('/', router);
         this.app.use('/api/v1/items', itemRouter.router);
     }
     public globalError = () => {
-        process.on('uncaughtException',(err) => {
+        process.on('uncaughtException', (err) => {
             console.log('Caught exception: ' + err);
         });
 
