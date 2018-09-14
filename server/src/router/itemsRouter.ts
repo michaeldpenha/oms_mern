@@ -13,7 +13,8 @@ export class ItemsRouter {
      */
     public routes = () => {
         this.router.get('/', this.fetchItems);
-        this.router.post('/', this.addItems)
+        this.router.post('/', this.addItems);
+        this.router.put('/',this.updateItems);
     }
     /**
      * fetchItems
@@ -49,6 +50,34 @@ export class ItemsRouter {
         },err=>{
             res.status(500).json({err});
         });
+    }
+    /**
+     * updateItems
+     */
+    public updateItems = (req : Request, res : Response) : void => {
+        const {
+            itemId,
+            itemName,
+            itemInStock,
+            itemImgUrl,
+            itemDescription
+        } = req.body;
+
+        const item = new Items({
+            itemId,
+            itemName,
+            itemInStock,
+            itemImgUrl,
+            itemDescription
+        });
+        //Items.findOneAndUpdate({})
+
+        Items.findOneAndUpdate({itemId : itemId},req.body).then(data => {
+            res.status(201).json({data});  
+        },err => {
+            res.status(500).json({err});
+        })
+        
     }
 }
 const itemRouter = new ItemsRouter();

@@ -11,6 +11,7 @@ var ItemsRouter = /** @class */ (function () {
         this.routes = function () {
             _this.router.get('/', _this.fetchItems);
             _this.router.post('/', _this.addItems);
+            _this.router.put('/', _this.updateItems);
         };
         /**
          * fetchItems
@@ -26,7 +27,6 @@ var ItemsRouter = /** @class */ (function () {
          * addItems
          */
         this.addItems = function (req, res) {
-            console.log(req.body);
             var _a = req.body, itemId = _a.itemId, itemName = _a.itemName, itemInStock = _a.itemInStock, itemImgUrl = _a.itemImgUrl, itemDescription = _a.itemDescription;
             var item = new items_1.default({
                 itemId: itemId,
@@ -36,6 +36,25 @@ var ItemsRouter = /** @class */ (function () {
                 itemDescription: itemDescription
             });
             item.save().then(function (data) {
+                res.status(201).json({ data: data });
+            }, function (err) {
+                res.status(500).json({ err: err });
+            });
+        };
+        /**
+         * updateItems
+         */
+        this.updateItems = function (req, res) {
+            var _a = req.body, itemId = _a.itemId, itemName = _a.itemName, itemInStock = _a.itemInStock, itemImgUrl = _a.itemImgUrl, itemDescription = _a.itemDescription;
+            var item = new items_1.default({
+                itemId: itemId,
+                itemName: itemName,
+                itemInStock: itemInStock,
+                itemImgUrl: itemImgUrl,
+                itemDescription: itemDescription
+            });
+            //Items.findOneAndUpdate({})
+            items_1.default.findOneAndUpdate({ itemId: itemId }, req.body).then(function (data) {
                 res.status(201).json({ data: data });
             }, function (err) {
                 res.status(500).json({ err: err });
