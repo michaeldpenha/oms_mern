@@ -16,6 +16,7 @@ export class ItemsRouter {
         this.router.post('/', this.addItems);
         this.router.put('/',this.updateItems);
         this.router.delete('/:itemId',this.deleteItems);
+        this.router.get('/:itemId',this.fetchItemInfo)
     }
     /**
      * fetchItems
@@ -79,8 +80,19 @@ export class ItemsRouter {
      * deleteItems
      */
     public deleteItems = (req : Request , res : Response) =>  {
-        let itemId : string = req.params.itemId;
+        let itemId : string = req.params ? req.params.itemId : '';
         Items.findOneAndRemove({itemId : itemId}).then(data => {
+            res.status(200).json({data});
+        },err => {
+            res.status(500).json({err});
+        })
+    }
+    /**
+     * fetchItemInfo
+     */
+    public fetchItemInfo = (req : Request , res : Response) => {
+        let itemId : string = req.params ? req.params.itemId : '';
+        Items.findOne({itemId : itemId}).then(data => {
             res.status(200).json({data});
         },err => {
             res.status(500).json({err});

@@ -13,6 +13,7 @@ var ItemsRouter = /** @class */ (function () {
             _this.router.post('/', _this.addItems);
             _this.router.put('/', _this.updateItems);
             _this.router.delete('/:itemId', _this.deleteItems);
+            _this.router.get('/:itemId', _this.fetchItemInfo);
         };
         /**
          * fetchItems
@@ -54,7 +55,6 @@ var ItemsRouter = /** @class */ (function () {
                 itemImgUrl: itemImgUrl,
                 itemDescription: itemDescription
             });
-            //Items.findOneAndUpdate({})
             items_1.default.findOneAndUpdate({ itemId: itemId }, req.body).then(function (data) {
                 res.status(201).json({ data: data });
             }, function (err) {
@@ -65,9 +65,19 @@ var ItemsRouter = /** @class */ (function () {
          * deleteItems
          */
         this.deleteItems = function (req, res) {
-            var itemId = req.params.itemId;
-            console.log(itemId);
+            var itemId = req.params ? req.params.itemId : '';
             items_1.default.findOneAndRemove({ itemId: itemId }).then(function (data) {
+                res.status(200).json({ data: data });
+            }, function (err) {
+                res.status(500).json({ err: err });
+            });
+        };
+        /**
+         * fetchItemInfo
+         */
+        this.fetchItemInfo = function (req, res) {
+            var itemId = req.params ? req.params.itemId : '';
+            items_1.default.findOne({ itemId: itemId }).then(function (data) {
                 res.status(200).json({ data: data });
             }, function (err) {
                 res.status(500).json({ err: err });
