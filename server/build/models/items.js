@@ -23,5 +23,5 @@ var itemSchema = new mongoose_1.Schema({
         default: ''
     }
 });
-exports.default = mongoose_1.model('items', itemSchema);
+exports.default = mongoose_1.model('inventory', itemSchema);
 //# sourceMappingURL=items.js.map

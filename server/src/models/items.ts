@@ -22,6 +22,5 @@ const itemSchema : Schema = new Schema({
         default: ''
     }
 });
-
-export default model('items',itemSchema);
+export default model('inventory',itemSchema);
 
