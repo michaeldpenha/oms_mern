@@ -12,6 +12,7 @@ var ItemsRouter = /** @class */ (function () {
             _this.router.get('/', _this.fetchItems);
             _this.router.post('/', _this.addItems);
             _this.router.put('/', _this.updateItems);
+            _this.router.delete('/:itemId', _this.deleteItems);
         };
         /**
          * fetchItems
@@ -56,6 +57,18 @@ var ItemsRouter = /** @class */ (function () {
             //Items.findOneAndUpdate({})
             items_1.default.findOneAndUpdate({ itemId: itemId }, req.body).then(function (data) {
                 res.status(201).json({ data: data });
+            }, function (err) {
+                res.status(500).json({ err: err });
+            });
+        };
+        /**
+         * deleteItems
+         */
+        this.deleteItems = function (req, res) {
+            var itemId = req.params.itemId;
+            console.log(itemId);
+            items_1.default.findOneAndRemove({ itemId: itemId }).then(function (data) {
+                res.status(200).json({ data: data });
             }, function (err) {
                 res.status(500).json({ err: err });
             });
